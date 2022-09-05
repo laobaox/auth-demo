@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+
+# tests
+pytest
+requests
