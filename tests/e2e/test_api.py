@@ -33,10 +33,10 @@ def test_create_user(url_base):
 def test_delete_user(url_base):
     name = random_name()
     r = requests.delete(f"{url_base}/users/{name}")
-    assert r.status_code == 400
+    assert r.status_code == 404
 
     name, r = create_user(url_base, name)
-    assert  r.status_code == 200
+    assert r.status_code == 200
 
     r = requests.delete(f"{url_base}/users/{name}")
     assert r.status_code == 200
@@ -62,6 +62,8 @@ def test_delete_role(url_base):
     assert r.status_code == 200
 
 
+def add_role_to_user(url_base):
+    pass
 
 
 

@@ -4,6 +4,7 @@ from auth_demo.service_layer import services
 from auth_demo import setting
 from auth_demo.lib import mem_token
 
+
 def test_create_user(user_repo):
     name = 'bob'
     password = '123'
