@@ -2,7 +2,7 @@ import hashlib
 import uuid
 from datetime import datetime
 
-from ..lib import helpers, user_token
+from ..lib import helpers, mem_token
 from .. import setting
 from ..domain import model
 
@@ -55,6 +55,13 @@ def create_role(name, role_repo):
     role_repo.add(role)
 
 
+def delete_role(name, role_repo):
+    role = role_repo.get_by_name(name)
+    if not role:
+        raise RoleNotExists('role not exsits')
+    role_repo.delete(role)
+
+
 def add_role_to_user(user_name, role_name, user_repo, role_repo):
     user = user_repo.get_by_name(user_name)
     if not user:
@@ -71,26 +78,28 @@ def auth_user(name, password, user_repo):
         raise UserNotExists('user not exists')
     if not user.check_password(password):
         raise PasswordError('password is error')
-    return user_token.TokenStore.create(user)
+    return mem_token.TokenStore.create(user)
 
 
 def invalidate_token(key):
-    if not user_token.TokenStore.exists(key):
+    if not mem_token.TokenStore.exists(key):
         raise TokenIvalid('token invalid')
-    user_token.TokenStore.delete(key)
+    mem_token.TokenStore.delete(key)
 
 
 def check_role(key, role_name, role_repo):
-    token = user_token.TokenStore.get(key)
+    token = mem_token.TokenStore.get(key)
     if not token:
         raise TokenIvalid('token invalid')
     user = token.data
     role = role_repo.get_by_name(role_name)
+    if not role:
+        raise RoleNotExists('role not exists')
     return user.has_role(role)
 
 
 def get_token_roles(key):
-    token = user_token.TokenStore.get(key)
+    token = mem_token.TokenStore.get(key)
     if not token:
         raise TokenIvalid('token invalid')
     roles = token.data.list_roles()

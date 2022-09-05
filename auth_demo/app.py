@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from pydantic import BaseModel
 
 from .adapters import repository
@@ -33,7 +33,7 @@ def delete_user(name: str):
 
 
 @app.post("/roles")
-def create_role(name: str):
+def create_role(name: str=Body()):
     try:
         services.create_role(name)
     except services.UserNotExists as e:

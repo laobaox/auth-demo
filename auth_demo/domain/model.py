@@ -20,7 +20,7 @@ class User(object):
 
     def add_role(self, role):
         self.roles.add(role)
-        role.users.append(self)
+        role.users.add(self)
 
     def has_role(self, role):
         return role in self.roles

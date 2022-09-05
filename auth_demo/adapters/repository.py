@@ -42,5 +42,5 @@ class MemRoleRepository(AbstractRepository):
         return self.roles.get(name, None)
 
     def delete(self, role):
-        self.users.pop(role.name, None)
+        self.roles.pop(role.name, None)
 

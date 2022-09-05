@@ -11,8 +11,8 @@ class Token(object):
         self.data = data
         self.expire_time = expire_time
 
-    def is_expire(self):
-        return self.datetime.now() > self.expire_time
+    def is_expired(self):
+        return datetime.now() > self.expire_time
 
     def __gt__(self, other):
         return self.expire_time > other.expire_time
@@ -43,7 +43,7 @@ class TokenStore(object):
             raise Exception('duplicate key')
         cls.clear_expire()
         cls._store[token.key] = token
-        heapq.heappush(token)
+        heapq.heappush(cls._expire_sort, token)
         return token
 
     @classmethod
@@ -61,6 +61,7 @@ class TokenStore(object):
             return token
         return None
 
+    @classmethod
     def exists(cls, key):
         token = cls._store.get(key)
         return token and not token.is_expired()

@@ -1,0 +1,15 @@
+version: "3"
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      - API_HOST=127.0.0.1
+      - API_PORT=8000
+    volumes:
+      - ./:/home/app
+    ports:
+      - "8000:8000"
