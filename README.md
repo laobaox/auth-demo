@@ -18,6 +18,8 @@ pip install -r requirements.txt
 run app
 ```
 python run_app.py
+# swagger document will auto generated at host:port/docs
+# default is localhost:8000/docs
 ```
 
 run test
