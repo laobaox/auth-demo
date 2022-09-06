@@ -29,10 +29,19 @@ export TOKEN_EXPIRE_SECONDS=5 # set token expire to 5 seconds to test token expi
 pytest tests/unit
 pytest tests/integration
 pytest tests/e2e
+pytest # run all tests
 ```
 
 ## run in pycharm
 run run_app.py after prepare the enviroment
+
+## run with docker
+```
+docker-compose up -d  #start the service
+docker-compose exec -e TOKEN_EXPIRE_SECONDS=5 app pytest tests/unit
+docker-compose exec -e TOKEN_EXPIRE_SECONDS=5 app pytest tests/integration
+docker-compose exec -e TOKEN_EXPIRE_SECONDS=5 app pytest tests/e2e
+```
 
 ## api
 the interface complies with the restful specification
