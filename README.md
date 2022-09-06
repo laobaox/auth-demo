@@ -25,7 +25,7 @@ python run_app.py
 
 run test
 ```
-expire TOKEN_EXPIRE_SECONDS=5 # set token expire to 5 seconds to test token expire
+export TOKEN_EXPIRE_SECONDS=5 # set token expire to 5 seconds to test token expire
 pytest tests/unit
 pytest tests/integration
 pytest tests/e2e
