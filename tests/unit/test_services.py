@@ -1,8 +1,10 @@
+import time
 import pytest
 from datetime import datetime
 from auth_demo.service_layer import services
 from auth_demo import setting
 from auth_demo.lib import mem_token
+from auth_demo import config
 
 
 def test_create_user(user_repo):
@@ -73,7 +75,7 @@ def test_auth_user(user_repo):
     token = services.auth_user(name, password, user_repo)
     assert token.data.name == 'bob'
     assert len(token.key) == setting.AUTH_TOKEN_SIZE
-    expire_seconds = setting.AUTH_TOKEN_EXPIRE_HOURS * 3600
+    expire_seconds = config.get_token_expire_seconds()
     assert expire_seconds-2<(token.expire_time - datetime.now()).total_seconds()<=expire_seconds
 
 
@@ -117,3 +119,14 @@ def get_token_roles(user_repo, role_repo):
     assert tuple(services.get_token_roles(token.key)) == ()
     services.add_role_to_user(token.data.name, role_name, user_repo, role_repo)
     assert tuple(services.get_token_roles(token.key)) == (role_name,)
+
+
+def test_token_expire(user_repo):
+    token = prepare_token(user_repo)
+    assert tuple(services.get_token_roles(token.key)) == ()
+    seconds = config.get_token_expire_seconds()
+    if seconds > 20:
+        raise Exception('fail, please set TOKEN_EXPIRE_SECONDS enviroment<=20')
+    time.sleep(seconds+1)
+    with pytest.raises(services.TokenIvalid):
+        services.get_token_roles(token.key)

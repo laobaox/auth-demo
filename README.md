@@ -24,6 +24,7 @@ python run_app.py
 
 run test
 ```
+expire TOKEN_EXPIRE_SECONDS=5 # set token expire to 5 seconds to test token expire
 pytest tests/unit
 pytest tests/integration
 pytest tests/e2e
@@ -34,6 +35,7 @@ run run_app.py after prepare the enviroment
 
 ## api
 the interface complies with the restful specification
+
 about restful: https://www.jianshu.com/p/b3bd2d4cde62
 
 Compared to requirements documents， the api was converted to complies with the restful specification.

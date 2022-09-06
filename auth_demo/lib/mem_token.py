@@ -2,6 +2,7 @@ import heapq
 from datetime import datetime, timedelta
 
 from .. import setting
+from .. import config
 from . import helpers
 
 
@@ -37,7 +38,7 @@ class TokenStore(object):
     @classmethod
     def create(cls, data):
         key = helpers.random_str(setting.AUTH_TOKEN_SIZE)
-        expire_time = datetime.now() + timedelta(hours=setting.AUTH_TOKEN_EXPIRE_HOURS)
+        expire_time = datetime.now() + timedelta(seconds=config.get_token_expire_seconds())
         token = Token(key, data, expire_time)
         cls.add(token)
         return token
@@ -74,5 +75,3 @@ class TokenStore(object):
     @classmethod
     def delete(cls, key):
         cls._store.pop(key, None)
-
-
