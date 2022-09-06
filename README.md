@@ -2,7 +2,7 @@
 auth-demo project, with 2 entities: User, Role. support create user, delete user, etc
 python version: 3.7 or higher
 
-# run in commandline
+# run in command line
 
 prepare python env
 
@@ -25,12 +25,41 @@ python run_app.py
 run test
 ```
 pytest tests/unit
+pytest tests/integration
 pytest tests/e2e
 ```
 
 # run in pycharm
 run run_app.py after prepare the enviroment
 
+## api
+the interface complies with the restful specification
+about restful: https://www.jianshu.com/p/b3bd2d4cde62
+
+Compared to requirements documents， the api was converted to complies with the restful specification.
+eg:
+* Create User - POST /users
+* Delete User - Delete /users/{name}
+
+All interfaces are available at http://{host}/docs
+
+## design
+According to DDD design philosophy， the project has layer architecture as follows:
+* api service: ./auth_demo/app.py
+* service layer: ./auth_demo/service_layer/
+* domain layer: ./auth_demo/doamin
+* repository: ./auth_demo/adapters/repository.py
+* external support: ./auth_demo/lib
+
+entities:
+
+in RDBMS， it should have entities and valueobject as follows:
+![img.png](img.png)
+
+but, with data save in memory， I omit the BindLine, and directly store the reference in an set collection.
+And store users to and dict collections with name as key for simple, and store roles in the same way.
+
+![img_1.png](img_1.png)
 
 ## Dependencies
 * fastapi - web framework
@@ -38,14 +67,3 @@ run run_app.py after prepare the enviroment
 * pydantic - used for api param model and response model
 * pytest - unit test framework
 * requests - used in end to end test for request the api
-
-## api spec
-the interface complies with the restful specification
-about restful: https://www.jianshu.com/p/b3bd2d4cde62
-
-## layer architecture
-from high to low
-* api service: ./auth_demo/app.py
-* service layer: ./auth_demo/service_layer/
-* domain layer: ./auth_demo/doamin
-* repository: ./auth_demo/adapters/repository.py
