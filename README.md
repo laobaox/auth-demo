@@ -59,12 +59,15 @@ in RDBMS， it should have entities and valueobject as follows:
 ![img.png](img.png)
 
 but, with data save in memory， I omit the BindLine, and directly store the reference in an set collection.
-And store users to and dict collections with name as key for simple, and store roles in the same way.
+
+And store users to an dict collections with name as key for simple, and store roles in the same way.
 
 ![img_1.png](img_1.png)
 
 Be attention， the User.roles is a set collections and store role with name as hash key,
+
 It was implement by python magic method \_\_eq\_\_ and \_\_hash\_\_,
+
 And Roles.users was implement in the same way.
 
 
