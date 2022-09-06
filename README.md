@@ -1,5 +1,6 @@
 ## intro 
-auth-demo project, with 2 entities: User, Role. support create user, delete user, etc
+auth-demo project, with 2 entities: User, Role. support create user, delete user, etc.
+
 python version: 3.7 or higher
 
 ## run in command line
