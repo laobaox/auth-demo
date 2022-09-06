@@ -1,5 +1,8 @@
 from ..lib import helpers
 
+# attention the method: __eq__ and __hash__
+# __eq__ and __hash__ is override to save set colletion with name as hash key
+
 class User(object):
     def __init__(self, id, name, salt, password_hash, ctime):
         self.id = id
@@ -19,8 +22,10 @@ class User(object):
         return helpers.calc_password_hash(password, self.salt) == self.password_hash
 
     def add_role(self, role):
+        # with __eq__ and __hash__ override,
+        # role and user will store in the set collection with name as hash key
         self.roles.add(role)
-        role.users.add(self)
+        role.add_user(self)
 
     def has_role(self, role):
         return role in self.roles

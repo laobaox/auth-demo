@@ -25,6 +25,11 @@ class Token(object):
 
 
 class TokenStore(object):
+    # all token store in cls._store with token.key as hash key
+    # _expire_sort is a heap structure with small root, ordered by token.expire_time
+    # so in _expire_sort The fastest to expire token are first
+    # the expired token will be clear with 2 seconds delta when creating new token
+
     _store = {}
     _expire_sort = []
     _last_clear_time = None

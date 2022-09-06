@@ -61,6 +61,11 @@ And store users to and dict collections with name as key for simple, and store r
 
 ![img_1.png](img_1.png)
 
+Be attention， the User.roles is a set collections and store role with name as hash key,
+It was implement by python magic method \_\_eq\_\_ and \_\_hash\_\_,
+And Roles.users was implement in the same way.
+
+
 ## Dependencies
 * fastapi - web framework
 * uvicorn - http server, combined with fastapi to provide http service
