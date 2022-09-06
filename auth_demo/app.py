@@ -68,7 +68,7 @@ def add_role_to_user(name: str, role_item: RoleItem):
     return None
 
 
-@app.post("/auth-tokens")
+@app.post("/auth-tokens", summary='Authenticate')
 def user_auth(user_item: UserItem):
     try:
         token = services.auth_user(user_item.name, user_item.password,
@@ -96,7 +96,7 @@ def check_role(token:str, role_name: str):
     return {"result": ret}
 
 
-@app.get('/auth-tokens/{token}/roles')
+@app.get('/auth-tokens/{token}/roles', summary='All Roles')
 def get_token_roles(token: str):
     try:
         ret = services.get_token_roles(token)
