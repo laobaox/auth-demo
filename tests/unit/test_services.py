@@ -51,6 +51,16 @@ def test_delete_role(role_repo):
     assert len(role_repo.roles) == 0
 
 
+def test_delete_role_in_use(user_repo, role_repo):
+    user_name = 'user1'
+    role_name = 'admin'
+    services.create_user(user_name, '123', user_repo)
+    services.create_role(role_name, role_repo)
+    services.add_role_to_user(user_name, role_name, user_repo, role_repo)
+    with pytest.raises(services.RoleInUse):
+        services.delete_role(role_name, role_repo)
+
+
 def test_add_role_to_user(user_repo, role_repo):
     user_name = 'bob'
     password = '123'

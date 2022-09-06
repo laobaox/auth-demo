@@ -63,7 +63,7 @@ def delete_role(name, role_repo):
     role = role_repo.get_by_name(name)
     if not role:
         raise RoleNotExists('role not exsits')
-    if len(role.users) > 0:
+    if not role.is_users_empty():
         raise RoleInUse('role in use')
     role_repo.delete(role)
 

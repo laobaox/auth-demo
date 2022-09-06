@@ -24,6 +24,7 @@ class User(object):
     def add_role(self, role):
         # with __eq__ and __hash__ override,
         # role and user will store in the set collection with name as hash key
+        # add user to role for limit deleting in use role
         self.roles.add(role)
         role.add_user(self)
 
@@ -50,8 +51,5 @@ class Role(object):
     def add_user(self, user):
         self.users.add(user)
 
-    def delete_user(self, user):
-        self.users.pop(user)
-
-    def has_user(self):
-        return len(self.users) != 0
+    def is_users_empty(self):
+        return len(self.users) == 0

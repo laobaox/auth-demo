@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from .adapters import repository
 from .service_layer import services
 
-app = FastAPI()
+app = FastAPI(title="auth-demo")
 
 
 class UserItem(BaseModel):
@@ -52,7 +52,7 @@ def create_role(role_item: RoleItem):
 def delete_role(name: str):
     try:
         services.delete_role(name, repository.MemRoleRepository())
-    except services.RoleNotExists as e:
+    except (services.RoleNotExists, services.RoleInUse) as e:
         raise HTTPException(status_code=404, detail=str(e))
     return None
 
