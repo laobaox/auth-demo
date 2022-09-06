@@ -63,35 +63,35 @@ def add_role_to_user(name: str, role_item: RoleItem):
         services.add_role_to_user(name, role_item.name,
                                   repository.MemUserRepository(),
                                   repository.MemRoleRepository())
-    except (services.UserNotExists, services.RoleExists) as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    except (services.UserNotExists, services.RoleNotExists) as e:
+        raise HTTPException(status_code=400, detail=str(e))
     return None
 
 
 @app.post("/auth-tokens")
 def user_auth(user_item: UserItem):
     try:
-        token = services.auth_user(UserItem.name, UserItem.password,
+        token = services.auth_user(user_item.name, user_item.password,
                                    repository.MemUserRepository())
     except (services.UserNotExists, services.PasswordError) as e:
         raise HTTPException(status_code=400, detail="auth fail")
     return {"token": token.key}
 
 
-@app.delete('/auth-tokens')
-def invalidate(token_item: TokenItem):
+@app.delete('/auth-tokens/{token}')
+def invalidate(token: str):
     try:
-        services.invalidate_token(token_item.token)
+        services.invalidate_token(token)
     except services.TokenIvalid as e:
         raise HTTPException(status_code=404, detail="token invalid")
     return None
 
 
-@app.get('/auth-tokens/{token}/role-checks')
+@app.get('/auth-tokens/{token}/role-checks/{role_name}')
 def check_role(token:str, role_name: str):
     try:
         ret = services.check_role(token, role_name, repository.MemRoleRepository())
-    except services.TokenIvalid as e:
+    except (services.TokenIvalid, services.RoleNotExists) as e:
         raise HTTPException(status_code=400, detail="token invalid")
     return {"result": ret}
 
@@ -103,5 +103,4 @@ def get_token_roles(token: str):
     except services.TokenIvalid as e:
         raise HTTPException(status_code=400, detail="token invalid")
     return {"items": ret}
-
 
